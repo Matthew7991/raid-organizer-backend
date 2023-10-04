@@ -5,17 +5,18 @@ import multer from "multer"
 import morgan from "morgan"
 import getDb from "./utilities/db.js"
 import { getRaids } from "./controller/raidController.js"
+import { authRouter } from "./routes/authRoutes.js"
 
 const port = process.env.PORT
 
 const server = express()
-export const db = getDb()
+export const db = await getDb()
 const upload = multer({ storage: multer.memoryStorage() })
 
 server.use(cors())
 server.use(express.json())
 server.use(morgan("dev"))
 
-server.get("/api/raids", getRaids)
+server.use("/api/auth", upload.none(), authRouter)
 
 server.listen(port, () => console.log("listening on port", port))
