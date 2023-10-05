@@ -6,6 +6,8 @@ import morgan from "morgan"
 import getDb from "./utilities/db.js"
 import { getRaids } from "./controller/raidController.js"
 import { authRouter } from "./routes/authRoutes.js"
+import { charactersRouter } from "./routes/charactersRouter.js"
+import { checkToken } from "./middleware/authMiddleware.js"
 
 const port = process.env.PORT
 
@@ -18,5 +20,6 @@ server.use(express.json())
 server.use(morgan("dev"))
 
 server.use("/api/auth", upload.none(), authRouter)
+server.use("/api/characters", checkToken, charactersRouter)
 
 server.listen(port, () => console.log("listening on port", port))

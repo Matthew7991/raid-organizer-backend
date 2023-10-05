@@ -9,15 +9,16 @@ export function encrypt(req, res, next) {
 
 export function checkToken(req, res, next) {
   const token = req.get("authorization").split(" ")[1]
-  console.log({ token })
+  // console.log({ token })
 
   if (token === "null") return res.status(403).end()
 
   try {
-    verifyToken(token)
+    const payload = verifyToken(token)
+    req.payload = payload
     next()
   } catch (error) {
-    console.log(error)
-    res.status(403).end()
+    // console.log(error)
+    res.status(401).end()
   }
 }
